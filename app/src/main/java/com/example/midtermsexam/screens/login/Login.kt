@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -38,6 +41,8 @@ import com.example.midtermsexam.R
 fun LoginScreen(onNavigate: () -> Unit){
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var signedin by remember { mutableStateOf(false) }
+    var forgetpassword by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -102,7 +107,7 @@ fun LoginScreen(onNavigate: () -> Unit){
         )
         Spacer(modifier = Modifier.height(20.dp))
         Button(
-            onClick = onNavigate,
+            onClick = {signedin = true},
             colors = ButtonColors(
                 containerColor = Color(0xFF2A78D6),
                 contentColor = Color.White,
@@ -119,7 +124,7 @@ fun LoginScreen(onNavigate: () -> Unit){
             )
         }
         TextButton(
-            onClick = onNavigate
+            onClick = {forgetpassword = true}
         ) {
             Text(
                 text = "Forgot password?",
@@ -127,7 +132,74 @@ fun LoginScreen(onNavigate: () -> Unit){
                 style = MaterialTheme.typography.bodyLarge
             )
         }
-        //to do ALERT BUTTONS
+        if(signedin){
+            AlertDialog(
+                onDismissRequest = {
+                    signedin = false
+                },
+                title = {
+                    Text("Signing in")
+                },
+                text = {
+                    Column() {
+                        Text("Logging in as $email")
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            signedin = false
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2A78D6))
+                    ){
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            signedin = false
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
+        if(forgetpassword){
+            AlertDialog(
+                onDismissRequest = {
+                    forgetpassword = false
+                },
+                title = {
+                    Text("Forget password")
+                },
+                text = {
+                    Column() {
+                        Text("Work in progress")
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            forgetpassword = false
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2A78D6))
+                    ){
+                        Text("OK")
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            forgetpassword = false
+                        }
+                    ) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
     }
 }
 
